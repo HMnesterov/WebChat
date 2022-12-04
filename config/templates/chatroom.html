@@ -16,22 +16,41 @@ Hello
 {% block content %}
 
 <div id="web"></div>
+
+<textarea id="chat-messages" cols="100" rows="50"></textarea><br>
+<input id="input" type="text" size="80"></br>
+
+<input id="submit" type="button" value="send">
+
+
 {{ room_name|json_script:"room-name" }}
 
-    <script>
+<script>
+    document.querySelector('#submit').onclick = function (e) {
+        const messageInputDom = document.querySelector('#input');
+        const message = messageInputDom.value;
+        ChatSocket.send(JSON.stringify({
+            'message': message
+        }));
+        messageInputDom.value = '';
 
-        const roomName = JSON.parse(document.getElementById("room-name").textContent);
-        const ChatSocket = new WebSocket(
-            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
-        );
 
-        ChatSocket.onmessage = function (e) {
-            const data = JSON.parse(e.data)
-            console.log(data)
-            document.querySelector('#web').innerHTML = data.tester
+    };
 
-        }
-    </script>
+    const roomName = JSON.parse(document.getElementById("room-name").textContent);
+    const ChatSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+    );
+
+    ChatSocket.onmessage = function (e) {
+        const data = JSON.parse(e.data)
+        console.log(data)
+
+
+        document.querySelector('#chat-messages').value += (data.message + '\n')
+
+    }
+</script>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
