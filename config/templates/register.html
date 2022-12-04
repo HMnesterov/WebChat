@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+<form class="mega" method="post">
+
+    {% csrf_token %}
+
+   {{form.as_p}}
+
+
+<button class="form-button" type="submit">Send</button>
+
+</form>
+
+
+
+
+{% endblock %}
