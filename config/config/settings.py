@@ -102,7 +102,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = "config.routing.application"
 
-
+DOMAIN = os.environ.get('DOMAIN')
 
 CHANNEL_LAYERS = {
     "default": {
