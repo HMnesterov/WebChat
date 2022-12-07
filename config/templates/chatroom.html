@@ -5,6 +5,8 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
+
+
 {% endblock %}
 
 
@@ -15,30 +17,42 @@ Hello
 
 {% block content %}
 
-<div id="web"></div>
-
-<textarea id="chat-messages" cols="100" rows="50" disabled></textarea><br>
-
-<input id="input" type="text" size="80"></br>
-
-<input id="submit" type="button" value="send">
+<div class="container">
 
 
-{{ room_name|json_script:"room-name" }}
+<div class="mb-3">
+   <h1>Chat "{{room_name}}"</h1>
+  <textarea class="form-control" id="chat-messages" rows="15"  disabled></textarea>
+</div>
+
+
+
+<input id="input" type="text" size="146"></br>
+
+
+
+<input id="submit" type="button" class="btn btn-primary" value="send">
+</div>
+
+{{ room_name|json_script:"room-name"}}
+{{ request.user.username|json_script:"username" }}
 
 <script>
+     const roomName = JSON.parse(document.getElementById("room-name").textContent);
+      const username = JSON.parse(document.getElementById("username").textContent);
     document.querySelector('#submit').onclick = function (e) {
         const messageInputDom = document.querySelector('#input');
         const message = messageInputDom.value;
         ChatSocket.send(JSON.stringify({
-            'message': message
+            'message': message,
+            'username':username,
         }));
         messageInputDom.value = '';
 
 
     };
 
-    const roomName = JSON.parse(document.getElementById("room-name").textContent);
+
     const ChatSocket = new WebSocket(
         'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
     );
@@ -47,8 +61,7 @@ Hello
         const data = JSON.parse(e.data)
         console.log(data)
 
-
-        document.querySelector('#chat-messages').value += (data.message + '\n')
+        document.querySelector('#chat-messages').value += (data.username + ':' +  data.message + '\n')
 
     }
 </script>
@@ -64,3 +77,8 @@ Hello
         integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous">
 </script>
 {% endblock %}
+
+
+
+
+
