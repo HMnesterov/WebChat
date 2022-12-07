@@ -2,7 +2,7 @@
 
 
 
-## If you want to change  settings, change the env file
+## If you want to change  settings, you should edit the env file
 
 
 
