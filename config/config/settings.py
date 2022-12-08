@@ -9,9 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 from dotenv import load_dotenv
 from pathlib import Path
-import os
 
 load_dotenv()
 
@@ -24,16 +24,18 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'chat',
-    'channels',
 
+    # applications
+    'chat',
+
+    # libraries
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -97,6 +99,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
